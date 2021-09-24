@@ -1,0 +1,59 @@
+<div class="container my-3">
+    <h1 class="display-4 text-center">
+      Add Store
+    </h1>
+
+    <form id="store-form" class="mb-4">
+      <div class="form-group">
+        <label for="store-id">Store ID</label>
+        <input type="text" id="store-id" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="store-address">Store Address</label>
+        <input type="text" id="store-address" class="form-control" />
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="/users/storelocator" class="btn btn-primary">Back</a>
+    </form>
+  </div>
+
+<script type="text/javascript">
+const storeForm = document.getElementById('store-form');
+const storeId = document.getElementById('store-id');
+const storeAddress = document.getElementById('store-address');
+async function addStore(e) {
+  e.preventDefault();
+
+  if (storeId.value === '' || storeAddress.value === '') {
+    alert('Please fill in fields');
+  }
+
+  const sendBody = {
+    storeId: storeId.value,
+    address: storeAddress.value
+  };
+
+  try {
+    const res = await fetch('/users/api/v1/stores', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(sendBody)
+    });
+
+    if (res.status === 400) {
+      throw Error('Store already exists!');
+    }
+
+    alert('Store added!');
+    window.location.href = '/users/storelocator';
+  } catch (err) {
+    alert(err);
+    return;
+  }
+}
+
+storeForm.addEventListener('submit', addStore);
+
+</script>

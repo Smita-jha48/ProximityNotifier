@@ -1,0 +1,251 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js"></script>
+<link
+  href="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css"
+  rel="stylesheet"
+/>
+<section class="pattern">
+<nav class="navbar navbar-expand-lg navbar-light bgs">
+    <a class="navbar-brand name" ><i class="fas fa-user"></i> <%=name %></a>
+    <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">   
+          <li class="nav-item">
+            <a href="/users/storelocator" class="nav-link btn-primary1 ">Store Locator</a>
+        </li>
+            <li class="nav-item">
+              <a href="/users/logout"><button class="btn box btn-primary btn1-primary" >Logout</button></a>
+            </li>
+        </ul>
+    </div>
+  </nav>
+
+
+<div class="container-fluid text-center">
+    
+     <p class="promo-title" >Set Alarm</p>
+  
+    
+</div>
+  <section class="team">
+    <div class="container">
+        <div class="row">
+          
+            <div class="col-md-6 text-center">
+              <div id="map"></div>
+            </div>
+            <div class="col-md-6  hero-text " id="query" >
+              <form class="login-form-1">
+               
+                <div class="form-group info">
+                  <input type="text" class="form-control" id="exampleInputLocation2" placeholder="Enter Destination" required>
+                </div>
+                <div class="hero-image">
+               <a href=""><button type="submit" class="btn box btn-primary btn1-primary" id="btnc" >Submit</button></a>
+               <a href=""><button type="submit" class="btn box btn-primary btn1-primary" id="btns" >Cancel</button></a>
+              </form> 
+             </div> 
+           
+            </div>
+            
+        </div>
+    </div>
+</section>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/es6-promise@4.2.4/dist/es6-promise.auto.min.js"></script>
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+
+mapboxgl.accessToken =
+  'pk.eyJ1Ijoic21pdGE4NzY5MTI2MTAiLCJhIjoiY2treWRzbjRjMGZkNjJxcDA1cWwzYTMxcyJ9.Q5nCyTM8wlyL1DtAoyZ9Gg';
+  const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  zoom: 8,
+  center: [85.8245, 20.2961]
+});
+
+
+/*document.getElementById("btnc").addEventListener("click",e=>{
+  e.preventDefault();
+  var lng1,lat1,lat2,lng2;
+  var loc= document.querySelector('#exampleInputLocation2').value;
+  var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+  mapboxClient.geocoding
+ .forwardGeocode({
+  query: loc,
+  autocomplete: false,
+  limit: 1
+
+  })  
+ .send()
+ .then(function(response){
+  lng1=response.body.features[0].geometry.coordinates[0];
+  lat1=response.body.features[0].geometry.coordinates[1];
+  
+
+       var myVar = setInterval(myTimer, 60000);
+        function myTimer()
+        { 
+        if ("geolocation" in navigator) { 
+        navigator.geolocation.getCurrentPosition(position => { 
+        lat2=position.coords.latitude;
+        lng2= position.coords.longitude;
+        if (distance(lat1, lng1, lat2, lng2) <= 12.0) { 
+        alert("It matches alarm sound")
+        var audio = new Audio('alarms.ogg');
+        audio.play();
+        clearInterval(myVar);
+        }
+        else console.log("no");
+        })
+        }
+        else
+        {
+          console.log("geo location not available");
+          clearInterval(myVar);
+        }
+        } 
+
+})
+
+
+  function distance(lat1, lon1, lat2, lon2) {
+    console.log(lat1+" "+ lon1 + " " + lat2 + " " + lon2);
+  var R = 6371; // Radius of the earth in km
+  var dLat = (lat2 - lat1) * Math.PI / 180;  // deg2rad below
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = 
+     0.5 - Math.cos(dLat)/2 + 
+     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+     (1 - Math.cos(dLon))/2;
+
+  console.log(R * 2 * Math.asin(Math.sqrt(a)));
+  return R * 2 * Math.asin(Math.sqrt(a));
+}
+ // output distance, in MILES
+
+}); 
+*/
+
+
+
+/*function initMap(){
+    var options ={
+        zoom:2,
+        center:{lat:27.2046,lng:77.4977}
+    }
+    var map =new 
+    google.maps.Map(document.getElementById('map'),options);
+
+    //add marker
+    var marker = new google.maps.Marker({
+        position: {lat: 20.2961,lng: 85.8245},
+        map:map,
+    })
+
+    //add info
+    var infoWindow = new google.maps.InfoWindow({
+        content: '<h1>hii</h1>'
+    });
+    marker.addListener('click', function(){
+       infoWindow.open(map,marker);
+    });
+    addmarker({lat: 20.2961,lng: 85.8245});
+    function addmarker(coords){
+        var marker = new google.maps.Marker({
+        position: coords,
+        map:map,
+    })
+    }
+   }*/
+</script> 
+<script>
+document.getElementById("btnc").addEventListener("click",e=>{
+e.preventDefault();
+map.addControl(
+new mapboxgl.GeolocateControl({
+positionOptions: {
+enableHighAccuracy: true
+},
+trackUserLocation: true
+})
+);
+var loc= document.querySelector('#exampleInputLocation2').value;
+var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+  mapboxClient.geocoding
+ .forwardGeocode({
+  query: loc,
+  autocomplete: false,
+  limit: 1
+
+  })  
+ .send()
+ .then(function(response){
+  lng1=response.body.features[0].geometry.coordinates[0];
+  lat1=response.body.features[0].geometry.coordinates[1];
+ 
+  function success(position) {
+    console.log(position.coords);
+    lat2=position.coords.latitude;
+    lng2= position.coords.longitude;
+    if (distance(lat1, lng1, lat2, lng2) <= 12.0) { 
+      
+        alert("It matches alarm sound")
+    
+        var audio = new Audio('alarms.ogg');
+         audio.play();
+         location.reload();
+        }
+    else console.log("no");
+}
+
+function error() {
+  alert('Sorry, no position available.');
+}
+
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 30000,
+  timeout: 1000
+};
+
+const watchID = navigator.geolocation.watchPosition(success, error, options);
+})
+})
+function distance(lat1, lon1, lat2, lon2) {
+    console.log(lat1+" "+ lon1 + " " + lat2 + " " + lon2);
+  var R = 6371; // Radius of the earth in km
+  var dLat = (lat2 - lat1) * Math.PI / 180;  // deg2rad below
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = 
+     0.5 - Math.cos(dLat)/2 + 
+     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+     (1 - Math.cos(dLon))/2;
+
+  console.log(R * 2 * Math.asin(Math.sqrt(a)));
+  return R * 2 * Math.asin(Math.sqrt(a));
+}
+  /*geocode();
+  function geocode(){
+  //  var location = '22 Main Street Boston MA';
+    axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/Bhubaneswar.json',{
+    params:{ 
+      access_token:'pk.eyJ1Ijoic21pdGE4NzY5MTI2MTAiLCJhIjoiY2treWRzbjRjMGZkNjJxcDA1cWwzYTMxcyJ9.Q5nCyTM8wlyL1DtAoyZ9Gg&limit=1'
+     } 
+    })
+    .then(function(response){
+        console.log(response);
+    })
+    .catch((e)=>{
+    console.log(e)});
+  } */
+  
+</script> 
+
+
+

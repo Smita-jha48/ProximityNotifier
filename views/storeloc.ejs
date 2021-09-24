@@ -1,0 +1,83 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js"></script>
+<link
+  href="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css"
+  rel="stylesheet"
+/>
+
+<div class="container my-3">
+    <h1 class="display-4 text-center">
+      <i class="fas fa-map-marked mr-4"></i>Store Locator
+    </h1>
+    <a href="/users/addstore" class="btn btn-success mb-4">Add Store</a>
+    <div
+      id="map"
+      style="width: 100%; height: 500px;border-radius: 5px;"
+    ></div>
+  </div>
+ 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/es6-promise@4.2.4/dist/es6-promise.auto.min.js"></script>
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript">
+    mapboxgl.accessToken =
+  'pk.eyJ1Ijoic21pdGE4NzY5MTI2MTAiLCJhIjoiY2treWRzbjRjMGZkNjJxcDA1cWwzYTMxcyJ9.Q5nCyTM8wlyL1DtAoyZ9Gg';
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  zoom: 9,
+  center: [85.8245, 20.2961]
+});
+
+async function getStores() {
+  const res = await fetch('/users/api/v1/stores');
+  const data = await res.json();
+  console.log(data);
+  const stores = data.data.map(store => {
+    return {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          store.location.coordinates[0],
+          store.location.coordinates[1]
+        ]
+      },
+      properties: {
+        storeId: store.storeId,
+        icon: 'shop'
+      }
+    };
+  });
+
+  loadMap(stores);
+}
+
+// Load map with stores
+function loadMap(stores) {
+  map.on('load', function() {
+    map.addLayer({
+      id: 'points',
+      type: 'symbol',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: stores
+        }
+      },
+      layout: {
+        'icon-image': '{icon}-15',
+        'icon-size': 1.5,
+        'text-field': '{storeId}',
+        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-offset': [0, 0.9],
+        'text-anchor': 'top'
+      }
+    });
+  });
+}
+
+getStores();
+  </script>
